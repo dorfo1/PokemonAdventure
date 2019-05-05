@@ -20,7 +20,7 @@ import br.com.fiap.pokemonmobileadventure.model.Time
     @Delete
     fun deletar(time: Time)
 
-    @Query("UPDATE Time SET nome = :timeNome, pokemon = :timePokemon WHERE id = :timeId")
-    fun update(timeId: Long, timeNome:String, timePokemon: Pokemon)
+    //@Query("UPDATE Time SET nome = :timeNome, pokemon = :timePokemon WHERE id = :timeId")
+    //fun update(timeId: Long, timeNome:String, timePokemon: String)
 
 }

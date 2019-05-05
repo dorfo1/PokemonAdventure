@@ -21,7 +21,7 @@ class TimeAdapter(val timeList: ArrayList<Time>) : RecyclerView.Adapter<TimeAdap
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val time: Time = timeList[p1]
-        p0.txtTeamName?.text = time.timeNome
+       // p0.txtTeamName?.text = time.timeNome
     }
 
 
