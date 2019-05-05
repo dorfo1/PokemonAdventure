@@ -16,6 +16,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.activity_cadastro_time.*
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity() {
                 println(t.message)
             }
         })
+
 
 
 

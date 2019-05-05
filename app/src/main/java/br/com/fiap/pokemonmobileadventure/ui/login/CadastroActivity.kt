@@ -33,7 +33,7 @@ class CadastroActivity : AppCompatActivity() {
         mAuth.createUserWithEmailAndPassword(etEmail.text.toString(), etSenha.text.toString())
             .addOnCompleteListener{
                 if(it.isSuccessful){
-                    salvaNoRealtimeDatabase(User(etNome.text.toString(),etEmail.text.toString(),etTelefone.text.toString(),ArrayList<Pokemon>()));
+                    salvaNoRealtimeDatabase(User(etEmail.text.toString(),etNome.text.toString(),etTelefone.text.toString(),ArrayList<Pokemon>()));
                 }else{
                     Toast.makeText(applicationContext,it.exception?.message, Toast.LENGTH_SHORT).show()
                 }
