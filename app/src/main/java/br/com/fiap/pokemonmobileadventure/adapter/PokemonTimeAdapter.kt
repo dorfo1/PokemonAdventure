@@ -11,8 +11,8 @@ import android.view.WindowManager
 
 
 
-class PokemonTimeAdapter(private var context:Context
-                         ,private var pokemons:List<Pokemon>) : RecyclerView.Adapter<PokemonTimeAdapter.PokemonTimeHolder>() {
+class PokemonTimeAdapter(private val context:Context,
+                         private var pokemons:MutableList<Pokemon>) : RecyclerView.Adapter<PokemonTimeAdapter.PokemonTimeHolder>() {
 
 
 
@@ -29,11 +29,27 @@ class PokemonTimeAdapter(private var context:Context
         return pokemons.size
     }
 
-    override fun onBindViewHolder(p0: PokemonTimeHolder, p1: Int) {
+    override fun onBindViewHolder(holder: PokemonTimeHolder, position: Int) {
+        var pokemon = pokemons.get(position)
+        holder.bindView(pokemon,listener = {
+            pokemons.removeAt(it)
+            notifyDataSetChanged()
+        })
+    }
 
+    fun adicionaPokemon(pokemon: Pokemon) {
+        pokemons.add(pokemon)
+        notifyDataSetChanged()
     }
 
 
-    class PokemonTimeHolder(itemView:View) : RecyclerView.ViewHolder(itemView)
+    class PokemonTimeHolder(itemView:View) : RecyclerView.ViewHolder(itemView){
+
+        fun bindView(pokemon : Pokemon, listener: (posicao:Int) -> Unit) = with(itemView){
+            itemView.setOnClickListener{
+                listener(adapterPosition)
+            }
+        }
+    }
 
 }

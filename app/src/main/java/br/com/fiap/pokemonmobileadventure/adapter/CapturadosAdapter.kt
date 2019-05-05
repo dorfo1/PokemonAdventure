@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import br.com.fiap.model.Pokemon
 import br.com.fiap.pokemonmobileadventure.R
 
-class CapturadosAdapter(private var context: Context
-                        ,private var pokemons:List<Pokemon> ) : RecyclerView.Adapter<CapturadosAdapter.CapturadosHolder>(){
+class CapturadosAdapter(private var context: Context,
+                        private var pokemons: MutableList<Pokemon>,
+                        private val listener: (Pokemon) ->Unit) : RecyclerView.Adapter<CapturadosAdapter.CapturadosHolder>(){
 
 
 
@@ -18,15 +19,27 @@ class CapturadosAdapter(private var context: Context
         return CapturadosHolder(view)
     }
 
+
+
     override fun getItemCount(): Int {
         return pokemons.size
     }
 
-    override fun onBindViewHolder(p0: CapturadosHolder, p1: Int) {
-
+    override fun onBindViewHolder(holder: CapturadosHolder, position: Int) {
+        var pokemon = pokemons.get(position)
+        holder.bindView(pokemon,listener)
     }
 
 
-    class CapturadosHolder(itemView:View) : RecyclerView.ViewHolder(itemView)
+    class CapturadosHolder(itemView:View) : RecyclerView.ViewHolder(itemView){
+
+        fun bindView(pokemon : Pokemon, listener: (Pokemon) -> Unit) = with(itemView){
+
+
+            itemView.setOnClickListener{
+                listener(pokemon)
+            }
+        }
+    }
 
 }

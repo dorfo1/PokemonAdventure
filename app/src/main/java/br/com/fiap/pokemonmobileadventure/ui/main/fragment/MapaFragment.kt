@@ -99,6 +99,7 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
     override fun onProviderDisabled(provider: String?) {
         Log.i("DISABLE", "Provider " + provider)
     }
+<<<<<<< HEAD
     fun hasPermission(perm: String): Boolean {
         return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(this.requireContext(), perm))
     }
@@ -144,4 +145,9 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
         val indexOfNearestPointToCentre = randomDistances.indexOf(Collections.min(randomDistances))
         return randomPoints.get(indexOfNearestPointToCentre)
     }
+=======
+
+
+
+>>>>>>> fb72a2f8af85da705506dfdd8292897e2d6bee1a
 }
