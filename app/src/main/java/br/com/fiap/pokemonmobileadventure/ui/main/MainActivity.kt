@@ -12,6 +12,7 @@ import br.com.fiap.pokemonmobileadventure.data.PokemonDatabase
 import br.com.fiap.pokemonmobileadventure.data.dao.PokemonDao
 import br.com.fiap.pokemonmobileadventure.remote.PokemonWebService
 import br.com.fiap.pokemonmobileadventure.remote.getPokemonAPI
+import br.com.fiap.pokemonmobileadventure.ui.main.fragment.TraderFragment
 import br.com.fiap.ui.Main.Fragment.MapaFragment
 import br.com.fiap.ui.Main.Fragment.PokedexFragment
 import br.com.fiap.ui.Main.Fragment.SobreFragment
@@ -52,6 +53,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_sobre ->{
                 tx.replace(R.id.frame_principal,SobreFragment())
+                tx.commit()
+            }
+            R.id.navigation_trader ->{
+                tx.replace(R.id.frame_principal,TraderFragment())
                 tx.commit()
             }
         }

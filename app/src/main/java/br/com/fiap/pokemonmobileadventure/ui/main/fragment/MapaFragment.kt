@@ -83,6 +83,7 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
     }
 
     override fun onLocationChanged(location: Location?) {
+        map.clear()
         map.addMarker(MarkerOptions().position(LatLng(location?.latitude!!,location.longitude)))
         var update = CameraUpdateFactory.newLatLngZoom(LatLng(location?.latitude!!,location.longitude), 15f)
         map.moveCamera(update)
