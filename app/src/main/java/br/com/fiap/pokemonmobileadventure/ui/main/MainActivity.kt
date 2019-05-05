@@ -16,6 +16,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_cadastro_time.*
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.OkHttpClient
@@ -81,11 +82,12 @@ class MainActivity : AppCompatActivity() {
 
         var teste = retrofit.create(PokemonWebService::class.java)
 
-        teste.getPokemon("10").enqueue(object : Callback<Pokemon> {
-            override fun onResponse(call: Call<Pokemon>, response: Response<Pokemon>) {
-                Log.i("TESTE", response.body().toString() )
+        teste.getPokemon("10").enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                var pokemon = Pokemon(response.body()?.get("name").toString(),response.body()?.get("sprites")?.asJsonObject?.get("front_default").toString(),
+                    0)
             }
-            override fun onFailure(call: Call<Pokemon>, t: Throwable) {
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 println(t.message)
             }
         })
