@@ -24,7 +24,6 @@ class TimeFragment : Fragment(){
 
 
         //botão de cadastro
-        val FAB = view.findViewById<FloatingActionButton>(R.id.fabNovoTime)
         FAB.setOnClickListener {
             val intent = Intent(activity, CadastroTimeActivity::class.java)
             startActivity(intent)
