@@ -5,9 +5,13 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import br.com.fiap.model.Pokemon
+import br.com.fiap.model.PokemonResponse
 
 import br.com.fiap.pokemonmobileadventure.R
+import br.com.fiap.pokemonmobileadventure.data.PokemonDatabase
+import br.com.fiap.pokemonmobileadventure.data.dao.PokemonDao
 import br.com.fiap.pokemonmobileadventure.remote.PokemonWebService
+import br.com.fiap.pokemonmobileadventure.remote.getPokemonAPI
 import br.com.fiap.ui.Main.Fragment.MapaFragment
 import br.com.fiap.ui.Main.Fragment.PokedexFragment
 import br.com.fiap.ui.Main.Fragment.SobreFragment
@@ -76,25 +80,28 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigation.selectedItemId = R.id.navigation_mapa
 
-        var retrofit = provideRetrofit(GsonBuilder().create(), OkHttpClient.Builder()
-            .addNetworkInterceptor( StethoInterceptor())
-            .build())
-
-        var teste = retrofit.create(PokemonWebService::class.java)
-
-        teste.getPokemon("10").enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                var pokemon = Pokemon(response.body()?.get("name").toString(),response.body()?.get("sprites")?.asJsonObject?.get("front_default").toString(),
-                    0)
+        
+        getPokemonAPI().buscar(150).enqueue(object : Callback<PokemonResponse>{
+            override fun onFailure(call: Call<PokemonResponse>, t: Throwable) {
+                Log.d("TAG","FALHA NA REQUISIÇÃO")
             }
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                println(t.message)
+
+            override fun onResponse(call: Call<PokemonResponse>, response: Response<PokemonResponse>) {
+                if(response.isSuccessful){
+                    var body = response.body()
+                    inserirPokemonsNoBanco(body?.content)
+                }
             }
+
         })
 
 
 
+    }
 
-
+    private fun inserirPokemonsNoBanco(pokemons: List<Pokemon>?) {
+        pokemons?.forEach {
+            //TODO inserir pokemon no banco
+        }
     }
 }

@@ -4,6 +4,9 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
+
+data class PokemonResponse(val content:List<Pokemon>)
+
 @Entity
 data class Pokemon(
     @ColumnInfo(name = "capturado") var capturado: Boolean,

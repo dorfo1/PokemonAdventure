@@ -20,7 +20,7 @@ class TraderFragment : Fragment(){
 
         var view = inflater.inflate(R.layout.fragment_trader,container,false)
 
-        var usuarios : MutableList<User> = ArrayList()
+        var usuarios : MutableList<User> = ArrayList<User>()
         mDatabase = FirebaseDatabase.getInstance()
         ref = mDatabase.reference
         initUsuarioList()

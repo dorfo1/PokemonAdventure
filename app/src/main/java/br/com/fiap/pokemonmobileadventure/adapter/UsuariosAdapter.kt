@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import br.com.fiap.model.User
 import br.com.fiap.pokemonmobileadventure.R
+import kotlinx.android.synthetic.main.row_treinador.view.*
+
 
 class UsuariosAdapter(private var context: Context,
                       private var usuarios:MutableList<User>,
@@ -25,13 +27,14 @@ class UsuariosAdapter(private var context: Context,
 
     override fun onBindViewHolder(holder: UsuariosHolder, position: Int) {
         var usuario = usuarios.get(position)
+
         holder.bindView(usuario,listener)
     }
 
 
-    class UsuariosHolder(itemView:View):RecyclerView.ViewHolder(itemView) {
+    class UsuariosHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun bindView(usuario: Any, listener: (Unit) -> User) {
+        fun bindView(usuario: User, listener: (Unit) -> User) = with(itemView) {
             row_treinador_email.text = usuario.email
             row_treinador_nome.text = usuario.nome
         }
