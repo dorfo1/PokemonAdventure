@@ -1,4 +1,4 @@
-package br.com.fiap.pokemonadventure.util
+package br.com.fiap.pokemonmobileadventure.utils
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,7 +8,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.util.Log
-import br.com.fiap.pokemonadventure.ui.main.MainActivity
+import br.com.fiap.pokemonmobileadventure.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
