@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat.getSystemService
+import android.support.v4.content.PermissionChecker.checkSelfPermission
 import com.google.android.gms.maps.model.LatLng
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,14 +33,9 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
     private lateinit var map : GoogleMap
     private lateinit var locationManager: LocationManager
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        PermissionUtils.validarPermissoes(
-            listOf(Manifest.permission.ACCESS_FINE_LOCATION),activity,1
-        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,9 +59,6 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0f,this)
     }
 
-
-
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         for(result in grantResults){
@@ -80,9 +73,14 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
 
     override fun onResume() {
         super.onResume()
-        requestLocationUpdates()
-    }
 
+        PermissionUtils.validarPermissoes(
+            listOf(Manifest.permission.ACCESS_FINE_LOCATION),activity,1
+        )
+        if(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
+            requestLocationUpdates()
+        }
+    }
 
     override fun onLocationChanged(location: Location?) {
         map.addMarker(MarkerOptions().position(LatLng(location?.latitude!!,location.longitude)))
@@ -101,9 +99,9 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
     override fun onProviderDisabled(provider: String?) {
         Log.i("DISABLE", "Provider " + provider)
     }
-
-
-
+    fun hasPermission(perm: String): Boolean {
+        return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(this.requireContext(), perm))
+    }
 
     fun getRandomLocation(point: LatLng, radius: Int): LatLng {
 
