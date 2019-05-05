@@ -15,6 +15,11 @@
             android:id="@+id/navigation_mapa"
             android:icon="@drawable/ic_notifications_black_24dp"
             android:title="@string/title_mapa"/>
+    <item
+            android:id="@+id/navigation_trader"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/title_trader"/>
+
 
     <item
             android:id="@+id/navigation_sobre"

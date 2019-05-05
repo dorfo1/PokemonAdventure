@@ -9,7 +9,7 @@ import br.com.fiap.model.Pokemon
 import br.com.fiap.pokemonmobileadventure.R
 import kotlinx.android.synthetic.main.row_pokedex.view.*
 
-class PokedexAdapter(var context: Context?, var pokemons:List<Pokemon>) : RecyclerView.Adapter<PokedexAdapter.PokedexHolder>(){
+class PokedexAdapter(var context: Context?, var pokemons:MutableList<Pokemon>) : RecyclerView.Adapter<PokedexAdapter.PokedexHolder>(){
 
 
 
