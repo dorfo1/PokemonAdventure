@@ -95,11 +95,11 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
     }
 
     override fun onProviderEnabled(provider: String?) {
-        Log.i("STATUS", "Provider " + provider)
+        Log.i("ENABLE", "Provider " + provider)
     }
 
     override fun onProviderDisabled(provider: String?) {
-        Log.i("STATUS", "Provider " + provider)
+        Log.i("DISABLE", "Provider " + provider)
     }
 
 
