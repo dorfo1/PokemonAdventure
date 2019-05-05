@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "344778232593",
+    "firebase_url": "https://pokemon-adventur-1556984359779.firebaseio.com",
+    "project_id": "pokemon-adventur-1556984359779",
+    "storage_bucket": "pokemon-adventur-1556984359779.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344778232593:android:57ef5bb48dafcc09",
+        "android_client_info": {
+          "package_name": "br.com.fiap.pokemonmobileadventure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344778232593-rrm1fo1088n5t3u7oh74u12s85n2v3o1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.fiap.pokemonmobileadventure",
+            "certificate_hash": "3d265aeb0be438de07624ed3d4180459078ab9d6"
+          }
+        },
+        {
+          "client_id": "344778232593-bnff3c9uru802ufhf8bvrsamin0uaqva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvbE3R3-EE4kz2G42JwnDuCUChGh73hck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344778232593-bnff3c9uru802ufhf8bvrsamin0uaqva.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

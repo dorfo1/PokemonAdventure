@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Pokemon Adventure</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_pokedex">Pokedex</string>
+    <string name="title_time">Time</string>
+    <string name="title_mapa">Mapa</string>
+    <string name="title_sobre">Sobre</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="google_maps_key">AIzaSyDBigadKP7jJi6M9dlCWUdXt39_bTkrRo4</string>
+    <string name="pokemon_desconhecido">Pokemon desconhecido</string>
+</resources>
