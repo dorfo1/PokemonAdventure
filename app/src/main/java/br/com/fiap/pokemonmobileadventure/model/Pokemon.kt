@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 import com.google.gson.JsonObject
 
 @Entity
-data class Time(
+data class Pokemon(
     @ColumnInfo(name = "nome")var nome: String,
     @ColumnInfo(name = "pokemon")var pokemon: JsonObject,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0
