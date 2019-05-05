@@ -10,6 +10,6 @@ import br.com.fiap.model.Pokemon
 @Entity
 data class Time(
     @ColumnInfo(name = "nome")var nome: String,
-    @ColumnInfo(name = "pokemon")var pokemon: Pokemon,
+    @ColumnInfo(name = "pokemon")var pokemon: @EmbPokemon,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0
     )

@@ -8,6 +8,6 @@ import com.google.gson.JsonObject
 @Entity
 data class Pokemon(
     @ColumnInfo(name = "nome")var nome: String,
-    @ColumnInfo(name = "urlImage")var urlImage: String,
+    @ColumnInfo(name = "pokemon")var pokemon: JsonObject,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0
 )
