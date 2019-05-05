@@ -3,15 +3,26 @@ package br.com.fiap.pokemonmobileadventure.ui.main
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import br.com.fiap.model.Pokemon
+
 import br.com.fiap.pokemonmobileadventure.R
+import br.com.fiap.pokemonmobileadventure.remote.PokemonWebService
 import br.com.fiap.ui.Main.Fragment.MapaFragment
 import br.com.fiap.ui.Main.Fragment.PokedexFragment
 import br.com.fiap.ui.Main.Fragment.SobreFragment
 import br.com.fiap.ui.Main.Fragment.TimeFragment
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
-
-
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +52,14 @@ class MainActivity : AppCompatActivity() {
         true
     }
 
+
+    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .baseUrl("https://pokeapi.co/api/v2/")
+            .client(okHttpClient)
+            .build()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -54,6 +73,23 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigation.selectedItemId = R.id.navigation_mapa
+
+        var retrofit = provideRetrofit(GsonBuilder().create(), OkHttpClient.Builder()
+            .addNetworkInterceptor( StethoInterceptor())
+            .build())
+
+        var teste = retrofit.create(PokemonWebService::class.java)
+
+        teste.getPokemon("10").enqueue(object : Callback<Pokemon> {
+            override fun onResponse(call: Call<Pokemon>, response: Response<Pokemon>) {
+                Log.i("TESTE", response.body().toString() )
+            }
+            override fun onFailure(call: Call<Pokemon>, t: Throwable) {
+                println(t.message)
+            }
+        })
+
+
 
 
     }
