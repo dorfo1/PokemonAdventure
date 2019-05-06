@@ -34,7 +34,9 @@ class TraderFragment : Fragment(){
         val menuListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 usuarios.clear()
-                dataSnapshot.children.mapNotNullTo(usuarios) { it.getValue<User>(User::class.java) }
+                dataSnapshot.children.mapNotNullTo(usuarios) {
+                    it.getValue<User>(User::class.java)
+                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
