@@ -7,7 +7,7 @@ import android.content.Context
 import br.com.fiap.model.Pokemon
 import br.com.fiap.pokemonmobileadventure.data.dao.PokemonDao
 
-@Database(entities = arrayOf(Pokemon::class), version = 1)
+@Database(entities = arrayOf(Pokemon::class), version = 2)
 abstract class PokemonDatabase : RoomDatabase(){
 
     abstract fun PokemonDao(): PokemonDao

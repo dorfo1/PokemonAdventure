@@ -13,5 +13,5 @@ data class Pokemon(
     @ColumnInfo(name = "capturado") var capturado: Boolean,
     @ColumnInfo(name = "nome")  @SerializedName("name") var nome: String,
     @ColumnInfo(name = "urlImagem") @SerializedName("imageURL") var urlImg: String,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0
+    @PrimaryKey @ColumnInfo(name = "id") @SerializedName("number") var id: Long = 0
 )
