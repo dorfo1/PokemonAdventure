@@ -3,6 +3,7 @@ package br.com.fiap.model
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 
 data class PokemonResponse(val content:List<Pokemon>)
@@ -10,7 +11,7 @@ data class PokemonResponse(val content:List<Pokemon>)
 @Entity
 data class Pokemon(
     @ColumnInfo(name = "capturado") var capturado: Boolean,
-    @ColumnInfo(name = "nome")var nome: String,
-    @ColumnInfo(name = "urlImagem")var urlImg: String,
+    @ColumnInfo(name = "nome")  @SerializedName("name") var nome: String,
+    @ColumnInfo(name = "urlImagem") @SerializedName("imageURL") var urlImg: String,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0
 )

@@ -1,28 +1,21 @@
 package br.com.fiap.pokemonmobileadventure.ui.main
 
+import android.arch.persistence.room.Room
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import br.com.fiap.model.Pokemon
 import br.com.fiap.model.PokemonResponse
-
 import br.com.fiap.pokemonmobileadventure.R
 import br.com.fiap.pokemonmobileadventure.data.PokemonDatabase
-import br.com.fiap.pokemonmobileadventure.data.dao.PokemonDao
-import br.com.fiap.pokemonmobileadventure.remote.PokemonWebService
 import br.com.fiap.pokemonmobileadventure.remote.getPokemonAPI
 import br.com.fiap.pokemonmobileadventure.ui.main.fragment.TraderFragment
 import br.com.fiap.ui.Main.Fragment.MapaFragment
 import br.com.fiap.ui.Main.Fragment.PokedexFragment
 import br.com.fiap.ui.Main.Fragment.SobreFragment
 import br.com.fiap.ui.Main.Fragment.TimeFragment
-import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_cadastro_time.*
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -30,6 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.Executors
 
 
 class MainActivity : AppCompatActivity() {
@@ -100,13 +94,29 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-
-
     }
 
     private fun inserirPokemonsNoBanco(pokemons: List<Pokemon>?) {
-        pokemons?.forEach {
-            //TODO inserir pokemon no banco
+        val dataBase = Room.databaseBuilder(
+            application,
+            PokemonDatabase::class.java,
+            "pokemonApp.db").build()
+
+        val pokemonDao = dataBase.PokemonDao()
+        val executor = Executors.newSingleThreadExecutor()
+
+        executor.execute {
+            pokemons?.forEach {
+                pokemonDao.inserir(it)
+            }
+
+            //TODO Corrigir para não deixar adicionar um pokemon repetido
+
+            var pokemonsCadastrados =  pokemonDao.getAll()
+
+            pokemonsCadastrados?.forEach {
+                println("Pokemon com id ${it.id} chama ${it.nome} com Imagem ${it.urlImg}")
+            }
         }
     }
 }
