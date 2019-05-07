@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import br.com.fiap.model.Pokemon
 import br.com.fiap.pokemonmobileadventure.R
 import br.com.fiap.pokemonmobileadventure.adapter.PokedexAdapter
+import br.com.fiap.pokemonmobileadventure.data.PokemonDatabase
+import java.util.concurrent.Executors
 
 class PokedexFragment : Fragment(){
 
@@ -17,7 +19,19 @@ class PokedexFragment : Fragment(){
         var view = inflater.inflate(R.layout.fragment_pokedex,container,false)
         var rvPokedex = view.findViewById<RecyclerView>(R.id.rvPokedex)
         rvPokedex.layoutManager = LinearLayoutManager(context)
-        rvPokedex.adapter = PokedexAdapter(context,ArrayList<Pokemon>())
+
+
+        val dataBase = PokemonDatabase.getInstance(inflater.context)
+
+        val pokemonDao = dataBase?.PokemonDao()
+        val executor = Executors.newSingleThreadExecutor()
+
+        executor.execute {
+            val pokemonsCapturados =  ArrayList<Pokemon>()
+            pokemonsCapturados.addAll(pokemonsCapturados)
+            rvPokedex.adapter = PokedexAdapter(context, pokemonsCapturados)
+        }
+
         return view
     }
 }

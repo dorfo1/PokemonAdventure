@@ -1,5 +1,6 @@
 package br.com.fiap.pokemonmobileadventure.data.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.Insert
@@ -22,5 +23,8 @@ interface PokemonDao {
 
     @Query("UPDATE Pokemon SET capturado = 1 WHERE id = :id")
     fun capturado(id: Long)
+
+    @Query("Select * from Pokemon WHERE capturado = 1")
+    fun getCapturados(): LiveData<List<Pokemon>>
 
 }
