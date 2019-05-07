@@ -17,7 +17,10 @@ interface PokemonDao {
     @Insert(onConflict = IGNORE )
     fun inserir(pokemon: Pokemon)
 
-    @Query("UPDATE Pokemon SET nome = :nome, urlImagem = :img, capturado = :capturado WHERE id = :timeId")
-    fun update(timeId: Long, nome:String, img: String, capturado: Boolean)
+    @Query("UPDATE Pokemon SET nome = :nome, urlImagem = :img, capturado = :capturado WHERE id = :id")
+    fun update(id: Long, nome:String, img: String, capturado: Boolean)
+
+    @Query("UPDATE Pokemon SET capturado = 1 WHERE id = :id")
+    fun capturado(id: Long)
 
 }

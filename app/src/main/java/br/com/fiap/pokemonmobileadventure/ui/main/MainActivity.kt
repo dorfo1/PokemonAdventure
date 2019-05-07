@@ -110,13 +110,13 @@ class MainActivity : AppCompatActivity() {
                 pokemonDao.inserir(it)
             }
 
-            //TODO Corrigir para não deixar adicionar um pokemon repetido
-
             var pokemonsCadastrados =  pokemonDao.getAll()
 
             pokemonsCadastrados?.forEach {
                 println("Pokemon com id ${it.id} chama ${it.nome} com Imagem ${it.urlImg}")
             }
+
+            pokemonDao.capturado(10)
         }
     }
 }
