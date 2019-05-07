@@ -97,26 +97,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inserirPokemonsNoBanco(pokemons: List<Pokemon>?) {
-        val dataBase = Room.databaseBuilder(
-            application,
-            PokemonDatabase::class.java,
-            "pokemonApp.db").build()
+        val dataBase = PokemonDatabase.getInstance(this)
 
-        val pokemonDao = dataBase.PokemonDao()
+        val pokemonDao = dataBase?.PokemonDao()
         val executor = Executors.newSingleThreadExecutor()
 
         executor.execute {
             pokemons?.forEach {
-                pokemonDao.inserir(it)
+                pokemonDao?.inserir(it)
             }
 
-            var pokemonsCadastrados =  pokemonDao.getAll()
+            var pokemonsCadastrados =  pokemonDao?.getAll()
 
             pokemonsCadastrados?.forEach {
                 println("Pokemon com id ${it.id} chama ${it.nome} com Imagem ${it.urlImg}")
             }
 
-            pokemonDao.capturado(10)
+            pokemonDao?.capturado(10)
         }
     }
 }
