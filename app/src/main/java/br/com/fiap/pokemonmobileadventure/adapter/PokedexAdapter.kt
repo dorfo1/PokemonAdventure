@@ -1,5 +1,7 @@
 package br.com.fiap.pokemonmobileadventure.adapter
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,7 +13,7 @@ import kotlinx.android.synthetic.main.row_pokedex.view.*
 import kotlinx.android.synthetic.main.row_pokedex.view.row_pokedex_nome
 import kotlinx.android.synthetic.main.row_pokemon_time.view.*
 
-class PokedexAdapter(var context: Context?, val pokemons:List<Pokemon>) : RecyclerView.Adapter<PokedexAdapter.PokedexHolder>(){
+class PokedexAdapter(var context: Context?, val pokemons: List<Pokemon>) : RecyclerView.Adapter<PokedexAdapter.PokedexHolder>(){
 
 
     override fun onCreateViewHolder(container: ViewGroup, position: Int): PokedexHolder {
@@ -20,13 +22,15 @@ class PokedexAdapter(var context: Context?, val pokemons:List<Pokemon>) : Recycl
     }
 
     override fun getItemCount(): Int {
-        return pokemons.size
+        return pokemons.size!!
     }
 
     override fun onBindViewHolder(holder: PokedexHolder, position: Int) {
         var pokemon = pokemons.get(position)
         holder.bindView(position+1)
-        holder.nome.text = pokemon.nome
+        if (pokemon != null) {
+            holder.nome.text = pokemon.nome
+        }
 
     }
 
