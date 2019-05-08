@@ -32,6 +32,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
     private var longitude = 0.0
 
     private lateinit var mMap: GoogleMap
+    private lateinit var locationCallback: LocationCallback
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_mapa,container,false)
@@ -48,7 +49,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         if (mMap != null) {
-            mMap!!.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title("Current Location"))
+            mMap!!.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title("Treinador").icon(BitmapDescriptorFactory.fromResource(R.drawable.trainer)))
         }
     }
 
@@ -76,7 +77,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun registerLocationListener() {
-        val locationCallback = object : LocationCallback() {
+        locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 onLocationChanged(locationResult!!.getLastLocation())
             }
@@ -84,6 +85,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         if(Build.VERSION.SDK_INT >= 23 && checkPermission()) {
             LocationServices.getFusedLocationProviderClient(requireContext()).requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
         }
+
     }
 
     //  
@@ -96,7 +98,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         mMap!!.clear()
         mMap!!.addMarker(MarkerOptions().position(location).title("Treinador").icon(BitmapDescriptorFactory.fromResource(R.drawable.trainer)))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
-        mMap.animateCamera(CameraUpdateFactory.zoomIn())
     }
 
     private fun checkPermission() : Boolean {
@@ -106,6 +107,14 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             requestPermissions()
             return false
         }
+    }
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        LocationServices.getFusedLocationProviderClient(requireContext()).removeLocationUpdates(locationCallback)
     }
 
     private fun requestPermissions() {
