@@ -113,7 +113,11 @@ class MainActivity : AppCompatActivity() {
                 println("Pokemon com id ${it.id} chama ${it.nome} com Imagem ${it.urlImg}")
             }
 
+            //Simulação de pokemons já capturados
             pokemonDao?.capturado(10)
+            pokemonDao?.capturado(100)
+            pokemonDao?.capturado(55)
+            pokemonDao?.capturado(32)
         }
     }
 }

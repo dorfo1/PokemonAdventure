@@ -1,5 +1,8 @@
 package br.com.fiap.ui.Main.Fragment
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -26,11 +29,11 @@ class PokedexFragment : Fragment(){
         val pokemonDao = dataBase?.PokemonDao()
         val executor = Executors.newSingleThreadExecutor()
 
-        executor.execute {
-            val pokemonsCapturados =  ArrayList<Pokemon>()
-            pokemonsCapturados.addAll(pokemonsCapturados)
-            rvPokedex.adapter = PokedexAdapter(context, pokemonsCapturados)
-        }
+        var liveDataPokemon: LiveData<List<Pokemon>> = pokemonDao!!.getCapturados()
+
+        liveDataPokemon.observe(this, Observer {
+            rvPokedex.adapter = it?.let { it1 -> PokedexAdapter(context, it1) }
+        })
 
         return view
     }
