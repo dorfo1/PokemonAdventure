@@ -1,5 +1,6 @@
 package br.com.fiap.ui.Main.Fragment
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.*
@@ -92,8 +94,9 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
         val location = LatLng(location.latitude, location.longitude)
         mMap!!.clear()
-        mMap!!.addMarker(MarkerOptions().position(location).title("Current Location"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+        mMap!!.addMarker(MarkerOptions().position(location).title("Treinador").icon(BitmapDescriptorFactory.fromResource(R.drawable.trainer)))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+        mMap.animateCamera(CameraUpdateFactory.zoomIn())
     }
 
     private fun checkPermission() : Boolean {
