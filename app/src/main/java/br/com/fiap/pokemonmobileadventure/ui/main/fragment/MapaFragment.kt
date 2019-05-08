@@ -1,42 +1,35 @@
 package br.com.fiap.ui.Main.Fragment
-
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat.getSystemService
-import android.support.v4.content.PermissionChecker.checkSelfPermission
-import com.google.android.gms.maps.model.LatLng
-import android.util.Log
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import br.com.fiap.pokemonmobileadventure.R
-import br.com.fiap.pokemonmobileadventure.utils.PermissionUtils
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-
 import java.util.*
 
+class MapaFragment : Fragment(), OnMapReadyCallback {
 
-class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
+    private var mLocationRequest: LocationRequest? = null
+    private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 segundos */
+    private val FASTEST_INTERVAL: Long = 2000 /* 2 segundos */
 
-    private lateinit var map : GoogleMap
-    private lateinit var locationManager: LocationManager
+    private var latitude = 0.0
+    private var longitude = 0.0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    }
+    private lateinit var mMap: GoogleMap
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_mapa,container,false)
@@ -45,66 +38,85 @@ class MapaFragment : Fragment(),OnMapReadyCallback,LocationListener{
 
         return view
     }
-
+    override fun onStart() {
+        super.onStart()
+        startLocationUpdates()
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        var update = CameraUpdateFactory.newLatLngZoom(LatLng(-23.5505, -46.6333), 10f)
-        map.moveCamera(update)
+        mMap = googleMap
+        if (mMap != null) {
+            mMap!!.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title("Current Location"))
+        }
+    }
+
+    // 3.
+    protected fun startLocationUpdates() {
+        // initialize location request object
+        mLocationRequest = LocationRequest.create()
+        mLocationRequest!!.run {
+            setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            setInterval(UPDATE_INTERVAL)
+            setFastestInterval(FASTEST_INTERVAL)
         }
 
+        // initialize location setting request builder object
+        val builder = LocationSettingsRequest.Builder()
+        builder.addLocationRequest(mLocationRequest!!)
+        val locationSettingsRequest = builder.build()
 
-    @SuppressLint("MissingPermission")
-    private fun requestLocationUpdates() {
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0f,this)
+        // initialize location service object
+        val settingsClient = LocationServices.getSettingsClient(requireContext())
+        settingsClient!!.checkLocationSettings(locationSettingsRequest)
+
+        // call register location listener
+        registerLocationListener()
+    }
+
+    private fun registerLocationListener() {
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                onLocationChanged(locationResult!!.getLastLocation())
+            }
+        }
+        if(Build.VERSION.SDK_INT >= 23 && checkPermission()) {
+            LocationServices.getFusedLocationProviderClient(requireContext()).requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
+        }
+    }
+
+    //  
+    private fun onLocationChanged(location: Location) {
+        var msg = "Update da localização: " + location.latitude  + " , " +location.longitude
+
+        println(msg)
+
+        val location = LatLng(location.latitude, location.longitude)
+        mMap!!.clear()
+        mMap!!.addMarker(MarkerOptions().position(location).title("Current Location"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+    }
+
+    private fun checkPermission() : Boolean {
+        if (ContextCompat.checkSelfPermission(requireContext() , android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            requestPermissions()
+            return false
+        }
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf("Manifest.permission.ACCESS_FINE_LOCATION"),1)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        for(result in grantResults){
-            if(result == PackageManager.PERMISSION_DENIED){
-                Toast.makeText(context,"Permissão negada",Toast.LENGTH_LONG).show()
-            }else{
-                requestLocationUpdates()
+        if(requestCode == 1) {
+            if (permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION ) {
+                registerLocationListener()
             }
-
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        PermissionUtils.validarPermissoes(
-            listOf(Manifest.permission.ACCESS_FINE_LOCATION),activity,1
-        )
-        if(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
-            requestLocationUpdates()
-        }
-    }
-
-    override fun onLocationChanged(location: Location?) {
-        map.clear()
-        map.addMarker(MarkerOptions().position(LatLng(location?.latitude!!,location.longitude)))
-        var update = CameraUpdateFactory.newLatLngZoom(LatLng(location?.latitude!!,location.longitude), 15f)
-        map.moveCamera(update)
-    }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        Log.i("STATUS", "Provider " + provider + " has now status: " + status)
-    }
-
-    override fun onProviderEnabled(provider: String?) {
-        Log.i("ENABLE", "Provider " + provider)
-    }
-
-    override fun onProviderDisabled(provider: String?) {
-        Log.i("DISABLE", "Provider " + provider)
-    }
-
-    fun hasPermission(perm: String): Boolean {
-        return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(this.requireContext(), perm))
-    }
-
     fun getRandomLocation(point: LatLng, radius: Int): LatLng {
 
         val randomPoints = ArrayList<LatLng>()
