@@ -7,7 +7,7 @@
                                                  android:layout_height="match_parent">
 
         <ImageView
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/ic_pokemond_launcher"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:id="@+id/img_sobre" app:layout_constraintStart_toStartOf="parent"
