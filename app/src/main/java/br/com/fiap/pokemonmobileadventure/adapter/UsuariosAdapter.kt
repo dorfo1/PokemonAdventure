@@ -10,9 +10,9 @@ import br.com.fiap.pokemonmobileadventure.R
 import kotlinx.android.synthetic.main.row_treinador.view.*
 
 
-class UsuariosAdapter(private var context: Context,
+class UsuariosAdapter(private var context: Context?,
                       private var usuarios:MutableList<User>,
-                      private var listener : (Unit) -> User) : RecyclerView.Adapter<UsuariosAdapter.UsuariosHolder>() {
+                      private var listener: (User) -> Unit) : RecyclerView.Adapter<UsuariosAdapter.UsuariosHolder>() {
 
 
 
@@ -31,12 +31,23 @@ class UsuariosAdapter(private var context: Context,
         holder.bindView(usuario,listener)
     }
 
+    fun adiconaUsuario(user: User?) {
+        if (user != null) {
+            usuarios.add(user)
+            notifyDataSetChanged()
+        }
+    }
+
 
     class UsuariosHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun bindView(usuario: User, listener: (Unit) -> User) = with(itemView) {
+        fun bindView(usuario: User, listener: (User) -> Unit) = with(itemView) {
             row_treinador_email.text = usuario.email
             row_treinador_nome.text = usuario.nome
+
+            itemView.setOnClickListener {
+                listener(usuario)
+            }
         }
     }
 }
