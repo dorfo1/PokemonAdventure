@@ -36,6 +36,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
     private var mLocationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 segundos */
     private val FASTEST_INTERVAL: Long = 2000 /* 2 segundos */
+    private val qtPokemonLimitOnMap: Int = 5
 
     private var latitude = 0.0
     private var longitude = 0.0
@@ -111,8 +112,15 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
         mMap!!.clear()
         mMap!!.addMarker(MarkerOptions().position(location).title("Treinador").icon(BitmapDescriptorFactory.fromResource(R.drawable.trainer)))
-        getRandomLocation(location,500)
+        setPokemonsOnMap(location)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+    }
+
+    private fun setPokemonsOnMap(location: LatLng) {
+        for (i in 0..qtPokemonLimitOnMap) {
+            var teste = getRandomLocation(location, 2000)
+            mMap!!.addMarker(MarkerOptions().position(teste).title("Pokemon").icon(BitmapDescriptorFactory.fromResource(R.drawable.generic))) //TODO Talvez achar uma imagem com uma qualidade melhor
+        }
     }
 
     private fun checkPermission() : Boolean {
