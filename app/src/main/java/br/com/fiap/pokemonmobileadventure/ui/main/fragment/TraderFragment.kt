@@ -73,7 +73,7 @@ class TraderFragment : Fragment(){
     private fun adicionarNaLista(key: String?, value: User?) {
         if(!key.equals(uid)){
             adapter.adiconaUsuario(value)
-            tvUsuariosVazio.visibility = View.INVISIBLE
+            tvUsuariosVazio?.visibility = View.INVISIBLE
         }
     }
 
