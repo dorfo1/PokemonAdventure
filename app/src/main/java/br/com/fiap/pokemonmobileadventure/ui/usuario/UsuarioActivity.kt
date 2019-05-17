@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_usuario.*
 
 class UsuarioActivity : AppCompatActivity() {
 //    TODO Criar alguma interação entre os usuários
-//    TODO Disponibilizar a ligação
 
     private var REQUEST_CALL: Int = 1
 

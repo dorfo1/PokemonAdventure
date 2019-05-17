@@ -1,13 +1,14 @@
 package br.com.fiap.ui.Main.Fragment
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import br.com.fiap.pokemonmobileadventure.R
+import br.com.fiap.pokemonmobileadventure.ui.Capturar.CapturarDialog
 import br.com.fiap.pokemonmobileadventure.utils.PermissionUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -23,15 +25,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.*
 
 
 //TODO Arrumar a permissão
-//TODO Criar o service que roda em background e gera os 10 pokemons aleatórios
-//TODO Criar a tela de captura de pokemon,após ele clicar em um ponto no mapa
 
-class MapaFragment : Fragment(), OnMapReadyCallback {
+class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
 
     private var mLocationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 segundos */
@@ -41,6 +42,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
     private var latitude = 0.0
     private var longitude = 0.0
 
+    private lateinit var mMarker: Marker
     private lateinit var mMap: GoogleMap
     private lateinit var locationCallback: LocationCallback
 
@@ -118,9 +120,25 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
     private fun setPokemonsOnMap(location: LatLng) {
         for (i in 0..qtPokemonLimitOnMap) {
+            mMap.setOnMarkerClickListener(this)
             var teste = getRandomLocation(location, 2000)
-            mMap!!.addMarker(MarkerOptions().position(teste).title("Pokemon").icon(BitmapDescriptorFactory.fromResource(R.drawable.generic))) //TODO Talvez achar uma imagem com uma qualidade melhor
+            mMarker = mMap!!.addMarker(MarkerOptions().position(teste).title("Pokemon").icon(BitmapDescriptorFactory.fromResource(R.drawable.generic))) //TODO Talvez achar uma imagem com uma qualidade melhor
         }
+    }
+
+    override fun onMarkerClick(p0: Marker?): Boolean {
+        if (p0?.equals(mMarker)!!) {
+            val ft = getFragmentManager()?.beginTransaction()
+            val prev = getFragmentManager()?.findFragmentByTag("dialog")
+            if (prev != null)
+            {
+                ft?.remove(prev)
+            }
+            ft?.addToBackStack(null)
+            val dialogFragment = CapturarDialog()
+            dialogFragment.show(ft, "dialog")
+        }
+        return true
     }
 
     private fun checkPermission() : Boolean {
@@ -156,6 +174,8 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             }
         }
     }
+
+
 
 
     fun getRandomLocation(point: LatLng, radius: Int): LatLng {
