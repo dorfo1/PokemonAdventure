@@ -24,9 +24,7 @@
 
             <ImageView
                     android:id="@+id/row_pokedex_image"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:scaleType="centerCrop"
+                    style="@style/pokemonImageLista"
                     android:layout_margin="4dp"
                     android:src="@drawable/pokemon_desconhecido"
                     app:layout_constraintTop_toTopOf="parent"

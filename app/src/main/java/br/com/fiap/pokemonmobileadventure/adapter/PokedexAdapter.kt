@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import br.com.fiap.model.Pokemon
 import br.com.fiap.pokemonmobileadventure.R
 import br.com.fiap.pokemonmobileadventure.utils.Headers
+import br.com.fiap.pokemonmobileadventure.utils.PokemonUtils
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.row_pokedex.view.*
 
@@ -34,11 +35,7 @@ class PokedexAdapter(var context: Context?, val pokemons: List<Pokemon>) : Recyc
             row_pokedex_nome.text = pokemon.nome
 
 
-            context?.applicationContext?.let {
-                Glide.with(it)
-                    .load(Headers.getUrlWithHeaders("https://pokedexdx.herokuapp.com${pokemon.urlImg}"))
-                    .into(row_pokedex_image)
-            }
+            PokemonUtils.loadPokemonImage(context,row_pokedex_image,pokemon.urlImg)
             if(pokemon.capturado){
                 row_pokedex_capturado.visibility = View.VISIBLE
             }else{

@@ -14,7 +14,9 @@
             android:roundIcon="@mipmap/ic_pokemond_launcher"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.Capturar.CapturarDialog">
+        <activity android:name=".ui.capturar.CapturaActivity">
+        </activity>
+        <activity android:name=".ui.capturar.CapturarDialog">
         </activity>
         <activity android:name=".ui.usuario.UsuarioActivity">
         </activity>

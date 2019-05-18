@@ -1,4 +1,4 @@
-package br.com.fiap.pokemonmobileadventure.ui.Capturar
+package br.com.fiap.pokemonmobileadventure.ui.capturar
 
 import android.os.Bundle
 import android.support.v4.app.DialogFragment

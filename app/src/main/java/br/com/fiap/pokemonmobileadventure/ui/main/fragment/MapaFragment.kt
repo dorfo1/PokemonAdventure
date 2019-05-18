@@ -1,6 +1,5 @@
 package br.com.fiap.ui.Main.Fragment
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import br.com.fiap.pokemonmobileadventure.R
-import br.com.fiap.pokemonmobileadventure.ui.Capturar.CapturarDialog
+import br.com.fiap.pokemonmobileadventure.ui.capturar.CapturarDialog
 import br.com.fiap.pokemonmobileadventure.utils.PermissionUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,8 +33,8 @@ import java.util.*
 class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
 
     private var mLocationRequest: LocationRequest? = null
-    private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 segundos */
-    private val FASTEST_INTERVAL: Long = 2000 /* 2 segundos */
+    private val UPDATE_INTERVAL = (10*60*10 * 1000).toLong()  /* 10 segundos */
+    private val FASTEST_INTERVAL: Long = 10000 /* 2 segundos */
     private val qtPokemonLimitOnMap: Int = 5
 
     private var latitude = 0.0
@@ -126,8 +124,8 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         }
     }
 
-    override fun onMarkerClick(p0: Marker?): Boolean {
-        if (p0?.equals(mMarker)!!) {
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        if (marker?.equals(mMarker)!!) {
             val ft = getFragmentManager()?.beginTransaction()
             val prev = getFragmentManager()?.findFragmentByTag("dialog")
             if (prev != null)
@@ -174,9 +172,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
             }
         }
     }
-
-
-
 
     fun getRandomLocation(point: LatLng, radius: Int): LatLng {
 
