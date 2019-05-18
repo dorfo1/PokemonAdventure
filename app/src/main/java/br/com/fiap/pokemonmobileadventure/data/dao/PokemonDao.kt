@@ -14,7 +14,7 @@ import br.com.fiap.model.Pokemon
 interface PokemonDao {
 
     @Query("SELECT * from Pokemon")
-    fun getAll(): List<Pokemon>
+    fun getAll(): LiveData<List<Pokemon>>
 
     @Insert(onConflict = IGNORE )
     fun inserir(pokemon: Pokemon)
@@ -27,5 +27,14 @@ interface PokemonDao {
 
     @Query("Select * from Pokemon WHERE capturado = 1")
     fun getCapturados(): LiveData<List<Pokemon>>
+
+    @Query("Select * from Pokemon WHERE time = 1")
+    fun getTime(): LiveData<MutableList<Pokemon>>
+
+    @Query("UPDATE Pokemon SET time = 1 WHERE id = :id")
+    fun adicionadoNoTime(id: Long)
+
+    @Query("UPDATE Pokemon SET time = 0 WHERE id = :id")
+    fun removidoDoTime(id: Long)
 
 }

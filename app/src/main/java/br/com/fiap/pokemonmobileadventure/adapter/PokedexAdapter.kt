@@ -25,26 +25,25 @@ class PokedexAdapter(var context: Context?, val pokemons: List<Pokemon>) : Recyc
 
     override fun onBindViewHolder(holder: PokedexHolder, position: Int) {
         var pokemon = pokemons.get(position)
-        holder.bindView(position+1)
-        holder.nome.text = pokemon.nome
-        holder.numero.text = pokemon.id.toString()
-
-        context?.applicationContext?.let {
-            Glide.with(it)
-                .load(Headers.getUrlWithHeaders("https://pokedexdx.herokuapp.com${pokemon.urlImg}"))
-                .into(holder.imagem)
-        }
-
+        holder.bindView(pokemon)
     }
 
     class PokedexHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindView(pokemon:Pokemon) = with(itemView){
+            row_pokedex_numero.text = pokemon.id.toString()
+            row_pokedex_nome.text = pokemon.nome
 
-        val nome = itemView.row_pokedex_nome
-        val numero = itemView.row_pokedex_numero
-        val imagem = itemView.row_pokedex_image
 
-        fun bindView(position: Int) = with(itemView){
-            row_pokedex_numero.text = position.toString()
+            context?.applicationContext?.let {
+                Glide.with(it)
+                    .load(Headers.getUrlWithHeaders("https://pokedexdx.herokuapp.com${pokemon.urlImg}"))
+                    .into(row_pokedex_image)
+            }
+            if(pokemon.capturado){
+                row_pokedex_capturado.visibility = View.VISIBLE
+            }else{
+                row_pokedex_capturado.visibility = View.INVISIBLE
+            }
         }
 
 

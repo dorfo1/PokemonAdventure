@@ -109,9 +109,7 @@ class MainActivity : AppCompatActivity() {
 
             var pokemonsCadastrados =  pokemonDao?.getAll()
 
-            pokemonsCadastrados?.forEach {
-                println("Pokemon com id ${it.id} chama ${it.nome} com Imagem ${it.urlImg}")
-            }
+
 
             //Simulação de pokemons já capturados
             pokemonDao?.capturado(10)

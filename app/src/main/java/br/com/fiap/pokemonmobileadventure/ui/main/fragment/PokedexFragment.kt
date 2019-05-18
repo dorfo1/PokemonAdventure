@@ -27,9 +27,8 @@ class PokedexFragment : Fragment(){
         val dataBase = PokemonDatabase.getInstance(inflater.context)
 
         val pokemonDao = dataBase?.PokemonDao()
-        val executor = Executors.newSingleThreadExecutor()
 
-        var liveDataPokemon: LiveData<List<Pokemon>> = pokemonDao!!.getCapturados()
+        var liveDataPokemon: LiveData<List<Pokemon>> = pokemonDao!!.getAll()
 
         liveDataPokemon.observe(this, Observer {
             rvPokedex.adapter = it?.let { it1 -> PokedexAdapter(context, it1) }

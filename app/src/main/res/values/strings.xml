@@ -9,5 +9,8 @@
     <string name="title_activity_maps">Mapa</string>
     <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
     <string name="google_maps_key">AIzaSyDBigadKP7jJi6M9dlCWUdXt39_bTkrRo4</string>
-    <string name="pokemon_desconhecido">Pokemon desconhecido</string>
+    <string name="pokemon_desconhecido">Pokemon desconhecido.</string>
+    <string name="mensagem_time">Nenhum Pokemon no time.</string>
+    <string name="mensagem_capturado">Nenhum Pokemon no capturado.</string>
+    <string name="mensagem_trader">Nenhum Treinador para trocar.</string>
 </resources>

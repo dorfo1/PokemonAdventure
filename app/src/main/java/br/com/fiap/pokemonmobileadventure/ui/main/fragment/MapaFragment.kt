@@ -1,17 +1,23 @@
 package br.com.fiap.ui.Main.Fragment
+import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import br.com.fiap.pokemonmobileadventure.R
+import br.com.fiap.pokemonmobileadventure.ui.Capturar.CapturarDialog
+import br.com.fiap.pokemonmobileadventure.utils.PermissionUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,18 +25,24 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.*
 
-class MapaFragment : Fragment(), OnMapReadyCallback {
+
+//TODO Arrumar a permissão
+
+class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
 
     private var mLocationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 segundos */
     private val FASTEST_INTERVAL: Long = 2000 /* 2 segundos */
+    private val qtPokemonLimitOnMap: Int = 5
 
     private var latitude = 0.0
     private var longitude = 0.0
 
+    private lateinit var mMarker: Marker
     private lateinit var mMap: GoogleMap
     private lateinit var locationCallback: LocationCallback
 
@@ -38,9 +50,13 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         var view = inflater.inflate(R.layout.fragment_mapa,container,false)
         var mapFragment = childFragmentManager.findFragmentById(R.id.frame_mapa) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-
+        PermissionUtils.validarPermissoes(
+            listOf(Manifest.permission.ACCESS_FINE_LOCATION),activity,1
+        )
         return view
     }
+
+
     override fun onStart() {
         super.onStart()
         startLocationUpdates()
@@ -55,7 +71,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
     // 3.
     protected fun startLocationUpdates() {
-        // initialize location request object
         mLocationRequest = LocationRequest.create()
         mLocationRequest!!.run {
             setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -68,7 +83,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         builder.addLocationRequest(mLocationRequest!!)
         val locationSettingsRequest = builder.build()
 
-        // initialize location service object
+
         val settingsClient = LocationServices.getSettingsClient(requireContext())
         settingsClient!!.checkLocationSettings(locationSettingsRequest)
 
@@ -88,6 +103,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+
     //  
     private fun onLocationChanged(location: Location) {
         var msg = "Update da localização: " + location.latitude  + " , " +location.longitude
@@ -95,9 +111,34 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         println(msg)
 
         val location = LatLng(location.latitude, location.longitude)
+
         mMap!!.clear()
         mMap!!.addMarker(MarkerOptions().position(location).title("Treinador").icon(BitmapDescriptorFactory.fromResource(R.drawable.trainer)))
+        setPokemonsOnMap(location)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+    }
+
+    private fun setPokemonsOnMap(location: LatLng) {
+        for (i in 0..qtPokemonLimitOnMap) {
+            mMap.setOnMarkerClickListener(this)
+            var teste = getRandomLocation(location, 2000)
+            mMarker = mMap!!.addMarker(MarkerOptions().position(teste).title("Pokemon").icon(BitmapDescriptorFactory.fromResource(R.drawable.generic))) //TODO Talvez achar uma imagem com uma qualidade melhor
+        }
+    }
+
+    override fun onMarkerClick(p0: Marker?): Boolean {
+        if (p0?.equals(mMarker)!!) {
+            val ft = getFragmentManager()?.beginTransaction()
+            val prev = getFragmentManager()?.findFragmentByTag("dialog")
+            if (prev != null)
+            {
+                ft?.remove(prev)
+            }
+            ft?.addToBackStack(null)
+            val dialogFragment = CapturarDialog()
+            dialogFragment.show(ft, "dialog")
+        }
+        return true
     }
 
     private fun checkPermission() : Boolean {
@@ -108,6 +149,8 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             return false
         }
     }
+
+
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
@@ -123,12 +166,18 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == 1) {
-            if (permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION ) {
-                registerLocationListener()
+        for (result in grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(context, "Permissão negada", Toast.LENGTH_LONG).show()
+            } else {
+                startLocationUpdates()
             }
         }
     }
+
+
+
+
     fun getRandomLocation(point: LatLng, radius: Int): LatLng {
 
         val randomPoints = ArrayList<LatLng>()
@@ -137,7 +186,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         myLocation.latitude = point.latitude
         myLocation.longitude = point.longitude
 
-        //This is to generate 10 random points
+
         for (i in 0..9) {
             val x0 = point.latitude
             val y0 = point.longitude
@@ -154,7 +203,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             val x = w * Math.cos(t)
             val y = w * Math.sin(t)
 
-            // Adjust the x-coordinate for the shrinking of the east-west distances
             val new_x = x / Math.cos(y0)
 
             val foundLatitude = new_x + x0
@@ -166,8 +214,11 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             l1.longitude = randomLatLng.longitude
             randomDistances.add(l1.distanceTo(myLocation))
         }
-        //Get nearest point to the centre
+
         val indexOfNearestPointToCentre = randomDistances.indexOf(Collections.min(randomDistances))
+        Log.d("TESTE",randomPoints.get(indexOfNearestPointToCentre).toString())
         return randomPoints.get(indexOfNearestPointToCentre)
     }
+
+
 }
