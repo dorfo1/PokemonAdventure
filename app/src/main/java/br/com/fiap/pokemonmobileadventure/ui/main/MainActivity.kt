@@ -120,7 +120,8 @@ class MainActivity : AppCompatActivity() {
                 pokemonDao?.capturado(pokemon?.id!!)
 
             }
-            ref.child("Usuario/"+mAuth.currentUser!!.uid).child("pokemons").push().setValue(pokemon)
+            pokemon?.capturado = true
+            ref.child("Usuario").child(mAuth.currentUser!!.uid).child("pokemons").push().setValue(pokemon)
         }
     }
 
