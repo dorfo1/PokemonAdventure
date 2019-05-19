@@ -75,6 +75,7 @@ class CapturaActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     private fun iniciaCaptura(pokemon: Pokemon) {
         contraintCaptura.visibility = View.VISIBLE
+        btnCapturar.visibility = View.INVISIBLE
         PokemonUtils.loadPokemonImage(applicationContext,ivCapturaPokemon, pokemon?.urlImg!!)
         val captura = (1..10).random()
         if(captura>5){

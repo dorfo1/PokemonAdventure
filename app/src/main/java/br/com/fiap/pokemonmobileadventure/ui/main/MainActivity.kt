@@ -68,13 +68,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl("https://pokeapi.co/api/v2/")
-            .client(okHttpClient)
-            .build()
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

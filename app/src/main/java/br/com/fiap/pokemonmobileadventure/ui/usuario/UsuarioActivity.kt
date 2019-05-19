@@ -15,7 +15,13 @@ import android.widget.Toast
 import br.com.fiap.model.User
 import br.com.fiap.pokemonmobileadventure.R
 import br.com.fiap.pokemonmobileadventure.adapter.PokedexAdapter
+import br.com.fiap.pokemonmobileadventure.remote.TraderAPI
+import br.com.fiap.pokemonmobileadventure.remote.TraderCliente
+import br.com.fiap.pokemonmobileadventure.remote.getTraderAPI
 import kotlinx.android.synthetic.main.activity_usuario.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UsuarioActivity : AppCompatActivity() {
 
@@ -39,7 +45,16 @@ class UsuarioActivity : AppCompatActivity() {
         }
 
         btnQueroTrocar.setOnClickListener {
-//            TODO ENVIAR PUSH NOTIFICATION
+           getTraderAPI().notificarTroca(usuario.nome,usuario.firebaseId).enqueue(object : Callback<Void>{
+               override fun onFailure(call: Call<Void>, t: Throwable) {
+                   Toast.makeText(applicationContext,"Falha ao notificar usuário",Toast.LENGTH_SHORT).show()
+               }
+
+               override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                   if(response.isSuccessful) Toast.makeText(applicationContext,usuario.nome+" foi notificado.",Toast.LENGTH_SHORT).show()
+               }
+
+           })
         }
     }
 
