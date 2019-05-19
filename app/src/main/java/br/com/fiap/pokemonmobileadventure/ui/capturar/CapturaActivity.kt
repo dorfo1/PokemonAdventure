@@ -18,6 +18,7 @@ import br.com.fiap.pokemonmobileadventure.data.PokemonDatabase
 import br.com.fiap.pokemonmobileadventure.data.dao.PokemonDao
 import br.com.fiap.pokemonmobileadventure.utils.PokemonUtils
 import com.bumptech.glide.Glide
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_captura.*
 import kotlinx.android.synthetic.main.layout_captura.*
 import kotlinx.android.synthetic.main.row_pokedex.view.*

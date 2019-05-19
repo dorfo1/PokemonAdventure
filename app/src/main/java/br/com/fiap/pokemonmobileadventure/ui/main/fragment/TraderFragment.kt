@@ -66,7 +66,8 @@ class TraderFragment : Fragment(){
                 dataSnapshot.children.forEach {
                     var nome = it.child("nome").getValue(String::class.java)
                     var email = it.child("email").getValue(String::class.java)
-                    var telefone = it.child("telefone").getValue(String::class.java);
+                    var telefone = it.child("telefone").getValue(String::class.java)
+                    var firebaseId = it.child("firebaseId").getValue(String::class.java)
                     var pokemons = ArrayList<Pokemon>()
                     var children = it.child("pokemons").children
                     children.forEach{
@@ -74,7 +75,7 @@ class TraderFragment : Fragment(){
                         pokemons.add(pokemon!!)
                     }
 
-                    adicionarNaLista(it.key,User(email!!,nome!!,telefone!!,pokemons))
+                    adicionarNaLista(it.key,User(email!!,nome!!,telefone!!,firebaseId!!,pokemons))
                 }
 
             }

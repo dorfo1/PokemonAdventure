@@ -6,6 +6,7 @@ import android.os.Parcelable
 data class User(var email:String,
                 var nome:String,
                 var telefone:String,
+                var firebaseId:String,
                 var pokemons: List<Pokemon>) : Parcelable
 
 {
@@ -16,11 +17,12 @@ data class User(var email:String,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.createTypedArrayList(Pokemon)
     )
 
 
-    constructor():this("", "", "", emptyList())
+    constructor():this("", "", "","", emptyList())
 
 
 
@@ -28,6 +30,7 @@ data class User(var email:String,
         parcel.writeString(email)
         parcel.writeString(nome)
         parcel.writeString(telefone)
+        parcel.writeString(firebaseId)
         parcel.writeTypedList(pokemons)
     }
 
