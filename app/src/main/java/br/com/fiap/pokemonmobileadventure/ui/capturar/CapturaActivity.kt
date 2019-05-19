@@ -56,7 +56,12 @@ class CapturaActivity : AppCompatActivity() {
         }
 
         fabCompartlhar.setOnClickListener {
-//            TODO compartilhar aqui
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Capturei o " +pokemonLiveData.value!!.nome+ "!")
+                type = "text/plain"
+            }
+            startActivity(sendIntent)
         }
     }
 
