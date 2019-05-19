@@ -38,8 +38,9 @@ class TraderFragment : Fragment(){
         var rvTreinador = view.findViewById<RecyclerView>(R.id.rvTreinadores)
         rvTreinador.layoutManager = LinearLayoutManager(context)
         adapter = UsuariosAdapter(context,ArrayList<User>()) {
+            var user = User()
             var intent = Intent(context, UsuarioActivity::class.java)
-//            intent.putExtra("Usuario",it as Parcelable)
+            //intent.putExtra("Usuario", user)
             startActivity(intent)
 //            TODO TRATAR O CLIQUE, PASSANDO O USUARIO PARA OUTRA TELA
         }

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import br.com.fiap.model.User
 import br.com.fiap.pokemonmobileadventure.R
 import kotlinx.android.synthetic.main.activity_usuario.*
 
@@ -17,6 +18,7 @@ class UsuarioActivity : AppCompatActivity() {
 //    TODO Criar alguma interação entre os usuários
 
     private var REQUEST_CALL: Int = 1
+    //val trainer = getIntent().getExtras().getSerializableExtra("Usuario") as? User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

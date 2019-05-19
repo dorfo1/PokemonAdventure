@@ -7,10 +7,14 @@
         android:layout_height="match_parent"
         tools:context=".ui.usuario.UsuarioActivity">
 
-    <Button
-            android:text="ligar para treinador"
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_ligar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="638dp"
-            android:id="@+id/btn_ligar" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_telefone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>
