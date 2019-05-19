@@ -24,8 +24,13 @@ class UsuarioActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usuario)
 
-        btn_ligar.setOnClickListener {
+        fabLigar.setOnClickListener {
             fazerLigacao()
+        }
+
+
+        btnQueroTrocar.setOnClickListener {
+//            TODO ENVIAR
         }
     }
 
