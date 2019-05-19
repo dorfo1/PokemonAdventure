@@ -16,6 +16,7 @@ import br.com.fiap.pokemonmobileadventure.ui.usuario.UsuarioActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_trader.*
+import java.io.Serializable
 
 
 class TraderFragment : Fragment(){
@@ -39,9 +40,8 @@ class TraderFragment : Fragment(){
         rvTreinador.layoutManager = LinearLayoutManager(context)
         adapter = UsuariosAdapter(context,ArrayList<User>()) {
             var intent = Intent(context, UsuarioActivity::class.java)
-//            intent.putExtra("Usuario",it as Parcelable)
+            intent.putExtra("Usuario",it)
             startActivity(intent)
-//            TODO TRATAR O CLIQUE, PASSANDO O USUARIO PARA OUTRA TELA
         }
         rvTreinador.adapter = adapter
         mDatabase = FirebaseDatabase.getInstance()

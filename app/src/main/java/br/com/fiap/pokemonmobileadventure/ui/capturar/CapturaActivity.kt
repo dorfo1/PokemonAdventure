@@ -50,6 +50,10 @@ class CapturaActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK,intent)
             finish()
         }
+
+        fabCompartlhar.setOnClickListener {
+//            TODO compartilhar aqui
+        }
     }
 
     private fun populaUI(pokemon: Pokemon) {

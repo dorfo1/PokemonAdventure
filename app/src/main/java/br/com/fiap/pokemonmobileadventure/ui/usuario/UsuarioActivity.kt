@@ -14,7 +14,7 @@ import br.com.fiap.pokemonmobileadventure.R
 import kotlinx.android.synthetic.main.activity_usuario.*
 
 class UsuarioActivity : AppCompatActivity() {
-//    TODO Criar alguma interação entre os usuários
+
 
     private var REQUEST_CALL: Int = 1
 
@@ -29,11 +29,8 @@ class UsuarioActivity : AppCompatActivity() {
 
     private fun fazerLigacao() {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CALL)
-
         } else {
-
             val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + 987809188))
             startActivity(intent)
 
@@ -42,15 +39,10 @@ class UsuarioActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         for (result in grantResults) {
-
             if (result == PackageManager.PERMISSION_DENIED) {
-
                 Toast.makeText(this, "Permissão negada", Toast.LENGTH_LONG).show()
-
             } else {
-
                 fazerLigacao()
 
             }
