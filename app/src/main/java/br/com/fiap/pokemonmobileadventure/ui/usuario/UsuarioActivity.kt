@@ -9,28 +9,37 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.widget.LinearLayout
 import android.widget.Toast
 import br.com.fiap.model.User
 import br.com.fiap.pokemonmobileadventure.R
+import br.com.fiap.pokemonmobileadventure.adapter.PokedexAdapter
 import kotlinx.android.synthetic.main.activity_usuario.*
 
 class UsuarioActivity : AppCompatActivity() {
 
 
     private var REQUEST_CALL: Int = 1
-    //val trainer = getIntent().getExtras().getSerializableExtra("Usuario") as? User
-
+    private lateinit var usuario : User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usuario)
+        supportActionBar?.hide()
+        usuario = intent.getParcelableExtra("Usuario") as User
+
+        tvUsuarioNome.text = usuario.nome
+        tvUsuarioEmail.text = usuario.email
+
+        rvPokemons.layoutManager = LinearLayoutManager(this)
+        rvPokemons.adapter = PokedexAdapter(this,usuario.pokemons)
 
         fabLigar.setOnClickListener {
             fazerLigacao()
         }
 
-
         btnQueroTrocar.setOnClickListener {
-//            TODO ENVIAR
+//            TODO ENVIAR PUSH NOTIFICATION
         }
     }
 
@@ -38,7 +47,7 @@ class UsuarioActivity : AppCompatActivity() {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CALL)
         } else {
-            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + 987809188))
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + usuario.telefone))
             startActivity(intent)
 
         }

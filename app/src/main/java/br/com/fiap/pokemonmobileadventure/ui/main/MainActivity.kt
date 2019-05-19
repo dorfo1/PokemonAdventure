@@ -138,13 +138,6 @@ class MainActivity : AppCompatActivity() {
 
             var pokemonsCadastrados =  pokemonDao?.getAll()
 
-
-
-            //Simulação de pokemons já capturados
-            pokemonDao?.capturado(10)
-            pokemonDao?.capturado(100)
-            pokemonDao?.capturado(55)
-            pokemonDao?.capturado(32)
         }
     }
 }

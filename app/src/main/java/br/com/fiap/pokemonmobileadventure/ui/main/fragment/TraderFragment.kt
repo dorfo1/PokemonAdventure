@@ -6,6 +6,7 @@ import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_trader.*
 import java.io.Serializable
+import com.google.firebase.database.DataSnapshot
+
+
 
 
 class TraderFragment : Fragment(){
@@ -58,7 +62,8 @@ class TraderFragment : Fragment(){
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 usuarios.clear()
                 dataSnapshot.children.forEach {
-                    adicionarNaLista(it.key,it.getValue(User::class.java))
+                    Log.d("jayob",it.child("email").value.toString())
+                    //adicionarNaLista(it.key,it.getValue(User::class.java))
                 }
 
             }
