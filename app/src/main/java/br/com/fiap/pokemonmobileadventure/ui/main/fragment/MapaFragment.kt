@@ -1,5 +1,6 @@
 package br.com.fiap.ui.Main.Fragment
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -14,7 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import br.com.fiap.pokemonmobileadventure.R
-import br.com.fiap.pokemonmobileadventure.ui.capturar.CapturarDialog
+import br.com.fiap.pokemonmobileadventure.ui.capturar.CapturaActivity
 import br.com.fiap.pokemonmobileadventure.utils.PermissionUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,6 +36,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
     private var mLocationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL = (10*60*10 * 1000).toLong()  /* 10 segundos */
     private val FASTEST_INTERVAL: Long = 10000 /* 2 segundos */
+    private val POKEMON_CAPTURADO_REQUEST_CODE : Int = 10
     private val qtPokemonLimitOnMap: Int = 5
 
     private var latitude = 0.0
@@ -126,15 +128,8 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         if (marker?.equals(mMarker)!!) {
-            val ft = getFragmentManager()?.beginTransaction()
-            val prev = getFragmentManager()?.findFragmentByTag("dialog")
-            if (prev != null)
-            {
-                ft?.remove(prev)
-            }
-            ft?.addToBackStack(null)
-            val dialogFragment = CapturarDialog()
-            dialogFragment.show(ft, "dialog")
+            var intent = Intent(context, CapturaActivity::class.java)
+            startActivityForResult(intent,POKEMON_CAPTURADO_REQUEST_CODE)
         }
         return true
     }
