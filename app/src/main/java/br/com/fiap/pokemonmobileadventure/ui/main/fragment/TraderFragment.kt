@@ -62,7 +62,11 @@ class TraderFragment : Fragment(){
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 usuarios.clear()
                 dataSnapshot.children.forEach {
-                    Log.d("jayob",it.child("email").value.toString())
+                    Log.d("jayob",it.toString())
+                    var children = it.child("pokemons").children
+                    children.forEach{
+                        Log.d("jayjay",it.toString())
+                    }
                     //adicionarNaLista(it.key,it.getValue(User::class.java))
                 }
 

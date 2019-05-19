@@ -14,10 +14,12 @@ data class User(val email:String,
         parcel.readString(),
         parcel.readString(),
         parcel.createTypedArrayList(Pokemon)
-    ) {
-    }
+    )
+
 
     constructor():this("", "", "", emptyList())
+
+
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(email)
