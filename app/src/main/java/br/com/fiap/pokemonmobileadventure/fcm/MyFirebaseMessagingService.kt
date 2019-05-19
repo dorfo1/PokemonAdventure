@@ -39,7 +39,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             createNotificationCompatBuilder(applicationContext)
                 .setContentTitle(Html.fromHtml(title))
                 .setSound(defaultSoundUri)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.mipmap.ic_pokemond_launcher)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
