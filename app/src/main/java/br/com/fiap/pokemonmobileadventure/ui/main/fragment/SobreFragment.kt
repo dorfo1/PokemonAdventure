@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.fragment_sobre.*
 class SobreFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_sobre,container,false);
-
-
         return view
     }
 }

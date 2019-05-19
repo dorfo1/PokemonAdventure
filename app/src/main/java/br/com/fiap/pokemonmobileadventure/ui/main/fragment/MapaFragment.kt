@@ -35,14 +35,15 @@ import java.util.*
 class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
 
     private var mLocationRequest: LocationRequest? = null
-    private val UPDATE_INTERVAL = (10*60*10 * 1000).toLong()  /* 10 segundos */
-    private val FASTEST_INTERVAL: Long = 10000 /* 2 segundos */
-    private val qtPokemonLimitOnMap: Int = 5
+    private val UPDATE_INTERVAL = (10*60*10 * 1000).toLong()
+    private val FASTEST_INTERVAL: Long = 1000 * 60
+    private val qtPokemonLimitOnMap: Int = 4
     private val POKEMON_CAPTURADO_REQUEST_CODE : Int = 10
     private var latitude = 0.0
     private var longitude = 0.0
+    private var markers = ArrayList<Marker>(10)
 
-    private lateinit var mMarker: Marker
+    //private lateinit var mMarker: Marker
     private lateinit var mMap: GoogleMap
     private lateinit var locationCallback: LocationCallback
 
@@ -97,18 +98,16 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         if(Build.VERSION.SDK_INT >= 23 && checkPermission()) {
             LocationServices.getFusedLocationProviderClient(requireContext()).requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
         }
-
     }
 
-
-    //  
     private fun onLocationChanged(location: Location) {
         var msg = "Update da localização: " + location.latitude  + " , " +location.longitude
-
         println(msg)
-
         val location = LatLng(location.latitude, location.longitude)
+        setTrainerOnMap(location)
+    }
 
+    private fun setTrainerOnMap(location: LatLng){
         mMap!!.clear()
         mMap!!.addMarker(MarkerOptions().position(location).title("Treinador").icon(BitmapDescriptorFactory.fromResource(R.drawable.trainer)))
         setPokemonsOnMap(location)
@@ -118,15 +117,18 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
     private fun setPokemonsOnMap(location: LatLng) {
         for (i in 0..qtPokemonLimitOnMap) {
             mMap.setOnMarkerClickListener(this)
-            var teste = getRandomLocation(location, 2000)
-            mMarker = mMap!!.addMarker(MarkerOptions().position(teste).title("Pokemon").icon(BitmapDescriptorFactory.fromResource(R.drawable.generic))) //TODO Talvez achar uma imagem com uma qualidade melhor
+            var teste = gerarPontosAleatorios(location, 2000)
+            var addMarker= mMap!!.addMarker(MarkerOptions().position(teste).title("Pokemon").icon(BitmapDescriptorFactory.fromResource(R.drawable.generic)))
+            markers.add(addMarker)
         }
     }
 
-    override fun onMarkerClick(marker: Marker?): Boolean {
-        if (marker?.equals(mMarker)!!) {
-            var intent = Intent(activity, CapturaActivity::class.java)
-            activity?.startActivityForResult(intent,POKEMON_CAPTURADO_REQUEST_CODE)
+    override fun onMarkerClick(markerClicado: Marker?): Boolean {
+        markers.forEachIndexed { index, marker ->
+            if (markerClicado?.equals(marker)!!) {
+                var intent = Intent(activity, CapturaActivity::class.java)
+                activity?.startActivityForResult(intent,POKEMON_CAPTURADO_REQUEST_CODE)
+            }
         }
         return true
     }
@@ -166,8 +168,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
     }
 
 
-    fun getRandomLocation(point: LatLng, radius: Int): LatLng {
-
+    fun gerarPontosAleatorios(point: LatLng, radius: Int): LatLng {
         val randomPoints = ArrayList<LatLng>()
         val randomDistances = ArrayList<Float>()
         val myLocation = Location("")
@@ -181,7 +182,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
 
             val random = Random()
 
-            // Convert radius from meters to degrees
             val radiusInDegrees = (radius / 111000f).toDouble()
 
             val u = random.nextDouble()
@@ -204,7 +204,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         }
 
         val indexOfNearestPointToCentre = randomDistances.indexOf(Collections.min(randomDistances))
-        Log.d("TESTE",randomPoints.get(indexOfNearestPointToCentre).toString())
         return randomPoints.get(indexOfNearestPointToCentre)
     }
 

@@ -24,8 +24,9 @@ data class Pokemon(
         parcel.readString(),
         parcel.readString(),
         parcel.readLong()
-    ) {
-    }
+    )
+
+    constructor() : this(false, false,"","",0)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeByte(if (capturado) 1 else 0)

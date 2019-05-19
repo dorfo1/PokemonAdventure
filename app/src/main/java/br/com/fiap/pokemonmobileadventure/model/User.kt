@@ -3,12 +3,15 @@ package br.com.fiap.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class User(val email:String,
-                val nome:String,
-                val telefone:String,
-                val pokemons: List<Pokemon>) : Parcelable
+data class User(var email:String,
+                var nome:String,
+                var telefone:String,
+                var pokemons: List<Pokemon>) : Parcelable
 
 {
+
+
+
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),

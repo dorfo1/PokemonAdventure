@@ -15,6 +15,7 @@
         <ImageView
                 android:id="@+id/ivPokemon"
                 style="@style/pokemonCaptura"
+                android:src="@drawable/pokemon_desconhecido"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -27,6 +28,8 @@
                 android:layout_marginTop="16dp"
                 android:text="0 - Pikachu"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
         <ImageView
                 android:id="@+id/ivCapturado"

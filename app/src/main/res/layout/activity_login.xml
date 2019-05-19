@@ -5,30 +5,37 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#fff"
         tools:context="br.com.fiap.ui.login.LoginActivity">
 
     <ImageView
             android:id="@+id/iv_pikachu"
             style="@style/pikachuImage"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/et_email"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/et_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
             android:id="@+id/et_email"
             style="@style/defaultEditText"
             android:hint="Email"
+            android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_pikachu"
-            android:layout_marginStart="8dp"/>
+            app:layout_constraintTop_toBottomOf="@id/iv_pikachu"/>
 
     <EditText
             android:id="@+id/et_senha"
             style="@style/defaultEditText"
             android:inputType="textPassword"
             android:hint="Senha"
+            android:layout_margin="16dp"
             app:layout_constraintTop_toBottomOf="@id/et_email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

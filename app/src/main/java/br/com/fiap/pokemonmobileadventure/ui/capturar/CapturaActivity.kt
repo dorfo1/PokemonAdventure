@@ -2,11 +2,16 @@ package br.com.fiap.pokemonmobileadventure.ui.capturar
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import br.com.fiap.model.Pokemon
 import br.com.fiap.pokemonmobileadventure.R
 import br.com.fiap.pokemonmobileadventure.data.PokemonDatabase
@@ -21,8 +26,8 @@ import java.util.concurrent.Executors
 class CapturaActivity : AppCompatActivity() {
 
     private lateinit var dataBase : PokemonDatabase
-    private lateinit var pokemon : Pokemon
     private lateinit var pokemonDao : PokemonDao
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,23 +35,22 @@ class CapturaActivity : AppCompatActivity() {
         supportActionBar?.hide()
         val pokemonAleatorio = (1..150).random()
         val executor = Executors.newSingleThreadExecutor()
-
         dataBase = PokemonDatabase.getInstance(this)!!
         pokemonDao = dataBase?.PokemonDao()
+        var pokemonLiveData: LiveData<Pokemon> = pokemonDao.getPokemonById(pokemonAleatorio)
 
-        executor.execute {
-             pokemon = pokemonDao?.getPokemonById(pokemonAleatorio)
-             populaUI(pokemon)
-        }
 
+        pokemonLiveData.observe(this, Observer {
+            populaUI(it!!)
+        })
 
         btnCapturar.setOnClickListener {
-            iniciaCaptura(pokemon)
+            iniciaCaptura(pokemonLiveData.value!!)
         }
 
         btnCapturaConfirmar.setOnClickListener {
             var intent = Intent()
-            intent.putExtra("Pokemon",pokemon)
+            intent.putExtra("Pokemon",pokemonLiveData.value)
             setResult(Activity.RESULT_OK,intent)
             finish()
         }
@@ -57,9 +61,8 @@ class CapturaActivity : AppCompatActivity() {
     }
 
     private fun populaUI(pokemon: Pokemon) {
-        //PokemonUtils.loadPokemonImage(applicationContext,ivPokemon, pokemon?.urlImg!!)
-        tvPokemon.text = "A wild "+pokemon?.nome + " appears"
-        //Glide.with(applicationContext).load("https://pokedexdx.herokuapp.com${pokemon.urlImg}").into(ivPokemon)
+        tvPokemon.text = "A wild "+pokemon.nome + " appears"
+        PokemonUtils.loadPokemonImage(applicationContext,ivPokemon, pokemon.urlImg)
         if(pokemon.capturado) ivCapturado.visibility = View.VISIBLE
     }
 

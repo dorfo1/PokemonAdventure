@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import br.com.fiap.model.Pokemon
 import br.com.fiap.model.User
 import br.com.fiap.pokemonmobileadventure.R
 import br.com.fiap.pokemonmobileadventure.adapter.UsuariosAdapter
@@ -58,16 +59,22 @@ class TraderFragment : Fragment(){
 
 
     private fun initUsuarioList() {
+
         val menuListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 usuarios.clear()
                 dataSnapshot.children.forEach {
-                    Log.d("jayob",it.toString())
+                    var nome = it.child("nome").getValue(String::class.java)
+                    var email = it.child("email").getValue(String::class.java)
+                    var telefone = it.child("telefone").getValue(String::class.java);
+                    var pokemons = ArrayList<Pokemon>()
                     var children = it.child("pokemons").children
                     children.forEach{
-                        Log.d("jayjay",it.toString())
+                        var pokemon = it.getValue(Pokemon::class.java)
+                        pokemons.add(pokemon!!)
                     }
-                    //adicionarNaLista(it.key,it.getValue(User::class.java))
+
+                    adicionarNaLista(it.key,User(email!!,nome!!,telefone!!,pokemons))
                 }
 
             }

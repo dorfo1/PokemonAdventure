@@ -20,7 +20,7 @@ interface PokemonDao {
     fun inserir(pokemon: Pokemon)
 
     @Query("SELECT * FROM Pokemon WHERE id=:id")
-    fun getPokemonById(id:Int) : Pokemon
+    fun getPokemonById(id:Int) : LiveData<Pokemon>
 
     @Query("UPDATE Pokemon SET nome = :nome, urlImagem = :img, capturado = :capturado WHERE id = :id")
     fun update(id: Long, nome:String, img: String, capturado: Boolean)

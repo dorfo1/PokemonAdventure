@@ -31,7 +31,6 @@ class CapturadosAdapter(private var context: Context?,
     override fun onBindViewHolder(holder: CapturadosHolder, position: Int) {
         var pokemon = pokemons.get(position)
         holder.bindView(pokemon,listener)
-        Log.d("j","PASSOU")
     }
 
     fun adicionaLista(pokemons: List<Pokemon>?) {
