@@ -17,7 +17,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         //remoteMessage.data
-        showNotification(remoteMessage, getLastScreen())
+        if(remoteMessage.notification!=null){
+            showNotification(remoteMessage, getLastScreen())
+        }
     }
 
 
@@ -37,7 +39,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             createNotificationCompatBuilder(applicationContext)
                 .setContentTitle(Html.fromHtml(title))
                 .setSound(defaultSoundUri)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)

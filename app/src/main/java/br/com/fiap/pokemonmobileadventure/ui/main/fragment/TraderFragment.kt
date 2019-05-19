@@ -32,6 +32,7 @@ class TraderFragment : Fragment(){
     private lateinit var mAuth : FirebaseAuth
     private lateinit var uid : String
     private lateinit var adapter : UsuariosAdapter
+    private lateinit var usuarioLogado : User
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -46,6 +47,7 @@ class TraderFragment : Fragment(){
         adapter = UsuariosAdapter(context,ArrayList<User>()) {
             var intent = Intent(context, UsuarioActivity::class.java)
             intent.putExtra("Usuario",it)
+            intent.putExtra("Logado",usuarioLogado)
             startActivity(intent)
         }
         rvTreinador.adapter = adapter
@@ -91,6 +93,8 @@ class TraderFragment : Fragment(){
         if(!key.equals(uid)){
             adapter.adiconaUsuario(value)
             tvUsuariosVazio?.visibility = View.INVISIBLE
+        }else{
+            usuarioLogado = value!!
         }
     }
 

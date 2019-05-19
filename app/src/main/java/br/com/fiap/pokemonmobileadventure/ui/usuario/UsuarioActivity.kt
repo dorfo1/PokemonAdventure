@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
 import br.com.fiap.model.User
@@ -28,12 +29,13 @@ class UsuarioActivity : AppCompatActivity() {
 
     private var REQUEST_CALL: Int = 1
     private lateinit var usuario : User
+    private lateinit var logado : User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usuario)
         supportActionBar?.hide()
         usuario = intent.getParcelableExtra("Usuario") as User
-
+        logado = intent.getParcelableExtra("Logado") as User
         tvUsuarioNome.text = usuario.nome
         tvUsuarioEmail.text = usuario.email
 
@@ -44,10 +46,16 @@ class UsuarioActivity : AppCompatActivity() {
             fazerLigacao()
         }
 
+        Log.d("USUARIO",usuario.nome)
+        Log.d("USUARIO",usuario.firebaseId)
+        Log.d("USUARIO",usuario.firebaseId)
+
+
         btnQueroTrocar.setOnClickListener {
-           getTraderAPI().notificarTroca(usuario.nome,usuario.firebaseId).enqueue(object : Callback<Void>{
+           getTraderAPI().notificarTroca(logado.nome,usuario.firebaseId).enqueue(object : Callback<Void>{
                override fun onFailure(call: Call<Void>, t: Throwable) {
                    Toast.makeText(applicationContext,"Falha ao notificar usuário",Toast.LENGTH_SHORT).show()
+                   Log.d("jayob",t.message)
                }
 
                override fun onResponse(call: Call<Void>, response: Response<Void>) {
