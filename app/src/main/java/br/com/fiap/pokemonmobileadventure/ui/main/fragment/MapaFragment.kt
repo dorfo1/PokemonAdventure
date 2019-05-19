@@ -125,8 +125,8 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         if (marker?.equals(mMarker)!!) {
-            var intent = Intent(context, CapturaActivity::class.java)
-            startActivityForResult(intent,POKEMON_CAPTURADO_REQUEST_CODE)
+            var intent = Intent(activity, CapturaActivity::class.java)
+            activity?.startActivityForResult(intent,POKEMON_CAPTURADO_REQUEST_CODE)
         }
         return true
     }
@@ -164,6 +164,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
             }
         }
     }
+
 
     fun getRandomLocation(point: LatLng, radius: Int): LatLng {
 

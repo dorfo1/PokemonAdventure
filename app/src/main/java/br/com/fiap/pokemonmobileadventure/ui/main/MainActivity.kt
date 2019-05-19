@@ -33,7 +33,7 @@ import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
-    val POKEMON_CAPTURADO_REQUEST_CODE : Int = 10
+    private val POKEMON_CAPTURADO_REQUEST_CODE : Int = 10
     private lateinit var mAuth : FirebaseAuth
     private lateinit var mDatabase: FirebaseDatabase
     private lateinit var ref : DatabaseReference
@@ -111,12 +111,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==POKEMON_CAPTURADO_REQUEST_CODE && resultCode== Activity.RESULT_OK){
+        if(requestCode==POKEMON_CAPTURADO_REQUEST_CODE && resultCode==Activity.RESULT_OK){
             val pokemon = data?.getParcelableExtra<Pokemon>("Pokemon")
             val dataBase = PokemonDatabase.getInstance(this)
             val pokemonDao = dataBase?.PokemonDao()
-            pokemonDao?.capturado(pokemon?.id!!)
-            ref.child("Usuario").child(mAuth.currentUser!!.uid).setValue(pokemon?.nome)
+            val executor = Executors.newSingleThreadExecutor()
+            executor.execute{
+                pokemonDao?.capturado(pokemon?.id!!)
+
+            }
+            ref.child("Usuario/"+mAuth.currentUser!!.uid).child("pokemons").push().setValue(pokemon)
         }
     }
 
