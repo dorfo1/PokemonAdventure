@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import br.com.fiap.pokemonmobileadventure.R
 import br.com.fiap.pokemonmobileadventure.ui.capturar.CapturaActivity
+
 import br.com.fiap.pokemonmobileadventure.utils.PermissionUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,9 +37,8 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
     private var mLocationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL = (10*60*10 * 1000).toLong()  /* 10 segundos */
     private val FASTEST_INTERVAL: Long = 10000 /* 2 segundos */
-    private val POKEMON_CAPTURADO_REQUEST_CODE : Int = 10
     private val qtPokemonLimitOnMap: Int = 5
-
+    private val POKEMON_CAPTURADO_REQUEST_CODE : Int = 10
     private var latitude = 0.0
     private var longitude = 0.0
 
@@ -69,7 +69,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         }
     }
 
-    // 3.
     protected fun startLocationUpdates() {
         mLocationRequest = LocationRequest.create()
         mLocationRequest!!.run {
@@ -78,7 +77,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
             setFastestInterval(FASTEST_INTERVAL)
         }
 
-        // initialize location setting request builder object
         val builder = LocationSettingsRequest.Builder()
         builder.addLocationRequest(mLocationRequest!!)
         val locationSettingsRequest = builder.build()
@@ -87,7 +85,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         val settingsClient = LocationServices.getSettingsClient(requireContext())
         settingsClient!!.checkLocationSettings(locationSettingsRequest)
 
-        // call register location listener
         registerLocationListener()
     }
 

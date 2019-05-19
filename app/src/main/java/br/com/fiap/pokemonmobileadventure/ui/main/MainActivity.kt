@@ -1,6 +1,8 @@
 package br.com.fiap.pokemonmobileadventure.ui.main
 
+import android.app.Activity
 import android.arch.persistence.room.Room
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +17,9 @@ import br.com.fiap.ui.Main.Fragment.MapaFragment
 import br.com.fiap.ui.Main.Fragment.PokedexFragment
 import br.com.fiap.ui.Main.Fragment.SobreFragment
 import br.com.fiap.ui.Main.Fragment.TimeFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.OkHttpClient
@@ -27,6 +32,11 @@ import java.util.concurrent.Executors
 
 
 class MainActivity : AppCompatActivity() {
+
+    val POKEMON_CAPTURADO_REQUEST_CODE : Int = 10
+    private lateinit var mAuth : FirebaseAuth
+    private lateinit var mDatabase: FirebaseDatabase
+    private lateinit var ref : DatabaseReference
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -65,12 +75,16 @@ class MainActivity : AppCompatActivity() {
             .client(okHttpClient)
             .build()
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
+        mAuth = FirebaseAuth.getInstance()
+        mDatabase = FirebaseDatabase.getInstance()
+        ref = mDatabase.reference
         val manager = supportFragmentManager
         val tx = manager.beginTransaction()
         tx.replace(R.id.frame_principal, MapaFragment())
@@ -91,9 +105,19 @@ class MainActivity : AppCompatActivity() {
                     inserirPokemonsNoBanco(body?.content)
                 }
             }
-
         })
+    }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==POKEMON_CAPTURADO_REQUEST_CODE && resultCode== Activity.RESULT_OK){
+            val pokemon = data?.getParcelableExtra<Pokemon>("Pokemon")
+            val dataBase = PokemonDatabase.getInstance(this)
+            val pokemonDao = dataBase?.PokemonDao()
+            pokemonDao?.capturado(pokemon?.id!!)
+            ref.child("Usuario").child(mAuth.currentUser!!.uid).setValue(pokemon?.nome)
+        }
     }
 
     private fun inserirPokemonsNoBanco(pokemons: List<Pokemon>?) {
